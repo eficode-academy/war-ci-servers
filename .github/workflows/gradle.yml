@@ -36,7 +36,7 @@ jobs:
         with:
           name: code
       - name: Test and build with Gradle
-        run: code/ci/unit-test-app.sh
+        run:  chmod +x code/ci/build-app.sh && code/ci/build-app.sh
       - name: Upload Repo
         uses: actions/upload-artifact@v1
         with:
@@ -52,7 +52,7 @@ jobs:
         name: code
         path: .
     - name: build docker
-      run: ci/build-docker.sh
+      run: chmod +x ci/build-docker.sh && ci/build-docker.sh
     - name: push docker
       run: code/ci/push-docker.sh
   Component-test:
@@ -64,4 +64,4 @@ jobs:
       with:
         name: code
     - name: Execute component test
-      run: code/ci/component-test.sh
+      run: chmod +x code/ci/component-test.sh && code/ci/component-test.sh
