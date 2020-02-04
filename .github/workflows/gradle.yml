@@ -10,3 +10,17 @@ jobs:
     - uses: actions/checkout@v2
     - name: Test and build with Gradle
       run: ci/unit-test-app.sh
+    - name: Upload math result for job 1
+      uses: actions/upload-artifact@v1
+      with:
+        name: code
+        path: .
+  docker-image:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Download code
+        uses: actions/download-artifact@v1
+        with:
+          name: code
+      - name: build docker
+        run: ci/build-docker.sh
