@@ -1,32 +1,59 @@
 
-image: gradle:alpine
+image: gradle:jdk11
 
-# Disable the Gradle daemon for Continuous Integration servers as correctness
-# is usually a priority over speed in CI environments. Using a fresh
-# runtime for each build is more reliable since the runtime is completely
-# isolated from any previous builds.
+stages:
+  - clone
+  - test_and_build
+  - docker_build
+  - component_test
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
-build:
-  stage: build
-  script: gradle --build-cache assemble
+clone:
+  stage: clone
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
     paths:
-      - build
-      - .gradle
-
-test:
-  stage: test
-  script: gradle check
+      - .
+build:
+  stage: test_and_build
+  script: chmod +x ci/unit-test-app.sh && ci/unit-test-app.sh
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
     paths:
-      - build
-      - .gradle
+      - .
+
+test:
+  stage: test_and_build
+  script: chmod +x ci/build-app.sh && ci/build-app.sh
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      -  .
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - .
+docker_build:
+    image: docker:19.03.1
+    stage: docker_build
+    services:
+    - docker:19.03.1-dind
+    script: 
+      - chmod +x ci/build-docker.sh && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/build-docker.sh
+      - chmod +x ci/push-docker.sh  && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/push-docker.sh
+  
+component_test:
+    image: docker:19.03.1
+    stage: component_test
+    services:
+    - docker:19.03.1-dind
+    script: 
+    - chmod +x ci/component-test.sh  && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/component-test.sh
