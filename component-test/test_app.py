@@ -9,7 +9,7 @@ import time
 
 class TestName(unittest.TestCase):
     url = os.getenv('SERVICE_URL', 'http://127.0.0.1:8000')
-    time.sleep(15)
+    time.sleep(5)
     def test_status(self):
         url = self.url + "/status"
         response = requests.get(url, timeout=1)
