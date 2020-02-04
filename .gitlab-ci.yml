@@ -35,7 +35,9 @@ docker_build:
         - .
     services:
     - docker:19.03.1-dind
-    script: 
+    script:
+      - ls
+      - ls ci 
       - chmod +x ci/build-docker.sh && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/build-docker.sh
       - chmod +x ci/push-docker.sh  && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/push-docker.sh
   
