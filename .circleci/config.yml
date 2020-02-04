@@ -50,7 +50,7 @@ jobs:
       - run:
           name: push docker
           command: chmod +x ci/push-docker.sh && ci/push-docker.sh
-    Component-test:
+  Component-test:
     machine: 
       image: ubuntu-1604:201903-01
     steps:
