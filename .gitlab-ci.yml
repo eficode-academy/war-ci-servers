@@ -34,7 +34,6 @@ docker_build:
     services:
     - docker:19.03.1-dind
     script:
-      - ls
       - apk add --no-cache bash
       - chmod +x ci/build-docker.sh && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/build-docker.sh
       - chmod +x ci/push-docker.sh  && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/push-docker.sh
@@ -49,4 +48,5 @@ component_test:
       paths:
         - .
     script: 
+    - apk add --no-cache bash
     - chmod +x ci/component-test.sh  && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/component-test.sh
