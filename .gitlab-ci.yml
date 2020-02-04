@@ -41,12 +41,12 @@ docker_build:
 component_test:
     image: docker:19.03.1
     stage: component_test
-    services:
-    - docker:19.03.1-dind
     cache:
       key: "$CI_COMMIT_REF_NAME"
       paths:
         - .
+    services:
+    - docker:19.03.1-dind
     script: 
     - apk add --no-cache bash
     - chmod +x ci/component-test.sh  && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/component-test.sh
