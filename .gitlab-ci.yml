@@ -35,7 +35,7 @@ docker_build:
     - docker:19.03.1-dind
     script:
       - ls
-      - 'ci/build-docker.sh'
+      - apk add --no-cache bash
       - chmod +x ci/build-docker.sh && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/build-docker.sh
       - chmod +x ci/push-docker.sh  && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/push-docker.sh
   
