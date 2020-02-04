@@ -1,0 +1,16 @@
+version: "3"
+services:
+  jenkins:
+    image: praqma/jenkins-kata-jenkins:latest
+    user: root
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - jenkins_home:/home
+      - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+      jenkins_data:
+      jenkins_home:
