@@ -36,6 +36,11 @@ test:
 docker_build:
     image: docker:19.03.1
     stage: docker_build
+    cache:
+      key: "$CI_COMMIT_REF_NAME"
+      policy: pull
+      paths:
+        - .
     services:
     - docker:19.03.1-dind
     script: 
@@ -47,5 +52,10 @@ component_test:
     stage: component_test
     services:
     - docker:19.03.1-dind
+    cache:
+      key: "$CI_COMMIT_REF_NAME"
+      policy: pull
+      paths:
+        - .
     script: 
     - chmod +x ci/component-test.sh  && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/component-test.sh
