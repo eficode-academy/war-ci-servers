@@ -8,8 +8,6 @@ stages:
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
-before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
 
 build:
   stage: test_and_build
