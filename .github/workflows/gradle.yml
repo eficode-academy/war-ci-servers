@@ -1,7 +1,9 @@
 name: Java CI
 
 on: [push]
-
+env: # Set the secret as an input
+  docker_username: ${{ secrets. docker_username }}
+  docker_password: ${{ secrets. docker_password }}
 jobs:
   Clone-down:
     name: Clone down repo
@@ -55,14 +57,8 @@ jobs:
     - name: set env variables
       run: export GIT_COMMIT=$GITHUB_SHA
     - name: build docker
-      with: # Set the secret as an input
-         docker_username: ${{ secrets. docker_username }}
-         docker_password: ${{ secrets. docker_password }}
       run: chmod +x ci/build-docker.sh && ci/build-docker.sh
     - name: push docker
-      with: # Set the secret as an input
-         docker_username: ${{ secrets. docker_username }}
-         docker_password: ${{ secrets. docker_password }}
       run: chmod +x ci/push-docker.sh && ci/push-docker.sh
   Component-test:
     runs-on: [ubuntu-latest]
