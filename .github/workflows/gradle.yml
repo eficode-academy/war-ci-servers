@@ -24,7 +24,7 @@ jobs:
           name: code
           path: . 
       - name: ls
-        run: ls
+        run: ls & ls ci
       - name: Test and build with Gradle
         run: ci/unit-test-app.sh
   Build:
