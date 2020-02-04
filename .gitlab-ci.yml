@@ -16,7 +16,6 @@ build:
   script: chmod +x ci/unit-test-app.sh && ci/unit-test-app.sh
   cache:
     key: "$CI_COMMIT_REF_NAME"
-    policy: pull
     paths:
       - .
 
@@ -25,20 +24,13 @@ test:
   script: chmod +x ci/build-app.sh && ci/build-app.sh
   cache:
     key: "$CI_COMMIT_REF_NAME"
-    policy: pull
     paths:
       -  .
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
-    paths:
-      - .
 docker_build:
     image: docker:19.03.1
     stage: docker_build
     cache:
       key: "$CI_COMMIT_REF_NAME"
-      policy: pull
       paths:
         - .
     services:
@@ -54,7 +46,6 @@ component_test:
     - docker:19.03.1-dind
     cache:
       key: "$CI_COMMIT_REF_NAME"
-      policy: pull
       paths:
         - .
     script: 
