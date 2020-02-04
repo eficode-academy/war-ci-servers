@@ -51,18 +51,13 @@ pipeline {
       options {
         skipDefaultCheckout(true)
       }
+      environment {
+                DCREDS = credentials('docker_login')
+            }
       steps {
         unstash 'code'
+        sh 'echo "$DCREDS_PSW" | docker login -u "$DCREDS_USR" --password-stdin'
         sh 'ci/build-docker.sh'
-      }
-    }
-    stage('push docker') {
-      when { branch 'master' }
-      options {
-        skipDefaultCheckout(true)
-      }
-      steps {
-        unstash 'code'
         sh 'ci/push-docker.sh'
       }
     }
