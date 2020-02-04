@@ -2,7 +2,6 @@
 image: gradle:jdk11
 
 stages:
-  - clone
   - test_and_build
   - docker_build
   - component_test
@@ -12,13 +11,6 @@ variables:
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
-clone:
-  stage: clone
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
-    paths:
-      - .
 build:
   stage: test_and_build
   script: chmod +x ci/unit-test-app.sh && ci/unit-test-app.sh
