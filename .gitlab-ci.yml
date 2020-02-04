@@ -51,7 +51,7 @@ component_test:
     - docker info
     - apk update
     - apk upgrade
-    - apk add python python-dev py-pip build-base
+    - apk add python-dev libffi-dev openssl-dev gcc libc-dev make py-pip
     - pip install docker-compose
     script: 
     - apk add --no-cache bash
