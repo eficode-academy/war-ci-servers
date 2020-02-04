@@ -52,7 +52,7 @@ pipeline {
         skipDefaultCheckout(true)
       }
       environment {
-                DCREDS = credentials('docker_login')
+                DCREDS = credentials('docker')
             }
       steps {
         unstash 'code'
