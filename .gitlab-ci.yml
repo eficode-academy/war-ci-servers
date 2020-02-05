@@ -1,13 +1,11 @@
 
 image: gradle:jdk11
-
 stages:
   - test_and_build
   - docker_build
   - component_test
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-
 
 build:
   stage: test_and_build
@@ -16,7 +14,6 @@ build:
     key: "$CI_COMMIT_REF_NAME"
     paths:
       - .
-
 test:
   stage: test_and_build
   script: chmod +x ci/build-app.sh && ci/build-app.sh
@@ -37,7 +34,6 @@ docker_build:
       - apk add --no-cache bash
       - chmod +x ci/build-docker.sh && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/build-docker.sh
       - chmod +x ci/push-docker.sh  && export GIT_COMMIT="GL-$CI_COMMIT_SHA" && ci/push-docker.sh
-  
 component_test:
     image: docker/compose
     stage: component_test
