@@ -1,0 +1,48 @@
+language: java
+jdk: oraclejdk11
+
+env:
+  global: S3_BUCKET=travis-ci-build-storage
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+services: docker
+
+install:
+  - sudo apt-get update
+  - sudo apt install python3-pip
+  - sudo apt-get install python3
+  - pip3 install -U pip
+  - pip3 install awscli
+
+jobs:
+  include:
+    - stage: Test
+      install: skip
+      script: chmod +x ci/unit-test-app.sh && ci/unit-test-app.sh
+
+    - stage: Build
+      script:
+        - chmod +x ci/build-app.sh && ci/build-app.sh
+        - aws s3 sync . s3://$S3_BUCKET/$TRAVIS_BUILD_NUMBER --storage-class=ONEZONE_IA --exclude "*" --include "app/build/libs/*.jar"
+
+    - stage: Docker Image
+      name: build & push docker
+      cache: false
+      script:
+        - mkdir -p app/build/libs
+        - aws s3 sync s3://$S3_BUCKET/$TRAVIS_BUILD_NUMBER/app/build/libs app/build/libs --storage-class=ONEZONE_IA
+        - chmod +x ci/build-docker.sh && export GIT_COMMIT="CC-$TRAVIS_COMMIT" && ci/build-docker.sh
+        - chmod +x ci/push-docker.sh  && export GIT_COMMIT="CC-$TRAVIS_COMMIT" && ci/push-docker.sh
+
+    - stage: Component Test
+      name: Execute component Test
+      cache: false
+      install: skip
+      script: chmod +x ci/component-test.sh  && export GIT_COMMIT="CC-$TRAVIS_COMMIT" && ci/component-test.sh
