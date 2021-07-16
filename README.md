@@ -6,6 +6,7 @@ Repo used for the talk "War of the CI servers"
 
 We have tried to make the same pipeline in all the different CI systems, that should make them look like the image below:
 
+
 ![The general pipeline.](img/frontpage.png)
 
 Steps:
