@@ -8,7 +8,7 @@ jobs:
   Clone-down:
     name: Clone down repo
     runs-on: ubuntu-latest
-    container: gradle:jdk11
+    container: gradle:6-jdk11
     steps:
     - uses: actions/checkout@v2
     - name: Upload Repo
@@ -19,7 +19,7 @@ jobs:
   Test:
       runs-on: ubuntu-latest
       needs: [Clone-down]
-      container: gradle:jdk11
+      container: gradle:6-jdk11
       steps:
       - name: Download code
         uses: actions/download-artifact@v1
@@ -31,7 +31,7 @@ jobs:
   Build:
       runs-on: ubuntu-latest
       needs: [Clone-down]
-      container: gradle:jdk11
+      container: gradle:6-jdk11
       steps:
       - name: Download code
         uses: actions/download-artifact@v1
