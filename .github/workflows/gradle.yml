@@ -54,7 +54,7 @@ jobs:
         name: code
         path: .
     - name: lint dockerfile
-      run: ci/lint-dockerfile.sh
+      run: bash ci/lint-dockerfile.sh
     - name: build docker
       run: export GIT_COMMIT="GA-$GITHUB_SHA" && ci/build-docker.sh
     - name: push docker
