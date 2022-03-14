@@ -21,7 +21,11 @@ build:
       - .
 test:
   stage: test_and_build
-  script: chmod +x ci/build-app.sh && ci/build-app.sh
+  services:
+    - docker:20-dind
+  script:
+   - apk add --no-cache bash
+   - chmod +x ci/build-app.sh && ci/build-app.sh
   cache:
     key: "$CI_COMMIT_REF_NAME"
     paths:
