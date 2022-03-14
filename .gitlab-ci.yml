@@ -9,7 +9,7 @@ variables:
 
 build:
   stage: test_and_build
-  script: bash ci/unit-test-app.sh
+  script: ci/unit-test-app.sh
   cache:
     key: "$CI_COMMIT_REF_NAME"
     paths:
