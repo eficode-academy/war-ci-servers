@@ -56,7 +56,7 @@ export default function () {
   // our HTTP request, note that we are saving the response to res, which can be accessed later
 
 
-  const res = http.get('http://172.17.0.1:8000/status');
+  const res = http.get('http://web:8000/status');
 
 
   //sleep(1);
