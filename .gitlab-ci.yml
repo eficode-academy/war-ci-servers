@@ -1,5 +1,5 @@
 
-image: docker:20-dind
+image: docker:20
 stages:
   - test_and_build
   - docker_build
@@ -8,6 +8,9 @@ variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 build:
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
   stage: test_and_build
   script:
     - apk add --no-cache bash
