@@ -1,5 +1,5 @@
 
-image: gradle:jdk11
+image: docker:20
 stages:
   - test_and_build
   - docker_build
