@@ -26,7 +26,8 @@ build:
   cache:
     key: "$CI_COMMIT_REF_NAME"
     paths:
-      -  .
+      - ./ci
+      - ./app/build/libs
 docker_build:
     image: docker:19.03.1
     stage: docker_build
@@ -34,6 +35,7 @@ docker_build:
       key: "$CI_COMMIT_REF_NAME"
       paths:
         - .
+      policy: pull
     services:
     - docker:19.03.1-dind
     script:
