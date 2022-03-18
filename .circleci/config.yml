@@ -33,25 +33,32 @@ jobs:
           paths:
             - .
   Docker-image:
-    machine: true
+    machine: 
+      image: ubuntu-2004:current
     steps:
       - attach_workspace:
           at: .
       - run:
+          name: lint docker
+          command: bash ci/lint-dockerfile.sh
+      - run:
           name: build docker
-          command: chmod +x ci/build-docker.sh && export GIT_COMMIT="CC-$CIRCLE_SHA1" && ci/build-docker.sh
+          command: export GIT_COMMIT="CC-$CIRCLE_SHA1" && bash ci/build-docker.sh
       - run:
           name: push docker
-          command: chmod +x ci/push-docker.sh  && export GIT_COMMIT="CC-$CIRCLE_SHA1" && ci/push-docker.sh
-  Component-test:
+          command: export GIT_COMMIT="CC-$CIRCLE_SHA1" && bash ci/push-docker.sh
+  system-test:
     machine: 
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:current
     steps:
       - attach_workspace:
           at: .
       - run:
           name: Execute component test
-          command: chmod +x ci/component-test.sh  && export GIT_COMMIT="CC-$CIRCLE_SHA1" && ci/component-test.sh
+          command: export GIT_COMMIT="CC-$CIRCLE_SHA1" && bash ci/component-test.sh
+      - run:
+          name: Execute performance test
+          command: export GIT_COMMIT="CC-$CIRCLE_SHA1" && bash ci/performance-test.sh
 
 workflows:
   version: 2
@@ -67,6 +74,6 @@ workflows:
       - Docker-image:
           requires:
             - build
-      - Component-test:
+      - system-test:
           requires:
             - Docker-image
