@@ -10,25 +10,21 @@ jobs:
           paths:
             - .
   test:
-    machine: true
+    machine:
+      image: ubuntu-2004:current
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: Setup bash
-          command: apk add --no-cache bash
       - run:
           name: Test with gradle
           command: bash ci/unit-test-app.sh
 
   build:
-    machine: true
+    machine:
+      image: ubuntu-2004:current
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: Setup bash
-          command: apk add --no-cache bash
       - run:
           name: Build with gradle
           command: bash ci/build-app.sh
