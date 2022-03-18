@@ -10,9 +10,7 @@ jobs:
           paths:
             - .
   test:
-    docker:
-      # specify the version you desire here
-      - image: docker:19.03.1-dind
+    machine: true
     steps:
       - attach_workspace:
           at: .
@@ -24,9 +22,7 @@ jobs:
           command: bash ci/unit-test-app.sh
 
   build:
-    docker:
-      # specify the version you desire here
-      - image: docker:20-dind
+    machine: true
     steps:
       - attach_workspace:
           at: .
@@ -41,8 +37,7 @@ jobs:
           paths:
             - .
   Docker-image:
-    machine: 
-      image: ubuntu-1604:201903-01
+    machine: true
     steps:
       - attach_workspace:
           at: .
