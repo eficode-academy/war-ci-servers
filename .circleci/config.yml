@@ -2,7 +2,7 @@ version: 2
 jobs:
   clone:
     docker:
-      - image: gradle:jdk11
+      - image: alpine
     steps:
       - checkout
       - persist_to_workspace:
@@ -12,24 +12,30 @@ jobs:
   test:
     docker:
       # specify the version you desire here
-      - image: gradle:jdk11
+      - image: docker:19.03.1-dind
     steps:
       - attach_workspace:
           at: .
       - run:
+          name: Setup bash
+          command: apk add --no-cache bash
+      - run:
           name: Test with gradle
-          command: chmod +x ci/unit-test-app.sh && ci/unit-test-app.sh
+          command: bash ci/unit-test-app.sh
 
   build:
     docker:
       # specify the version you desire here
-      - image: gradle:jdk11
+      - image: docker:20-dind
     steps:
       - attach_workspace:
           at: .
       - run:
+          name: Setup bash
+          command: apk add --no-cache bash
+      - run:
           name: Build with gradle
-          command: chmod +x ci/build-app.sh && ci/build-app.sh
+          command: bash ci/build-app.sh
       - persist_to_workspace:
           root: .
           paths:
