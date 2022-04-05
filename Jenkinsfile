@@ -17,15 +17,9 @@ pipeline {
           options {
             skipDefaultCheckout(true)
           }
-          agent {
-            docker {
-              image 'gradle:jdk11'
-            }
-          }
           steps {
             unstash 'code'
-            sh 'ci/unit-test-app.sh'
-            junit 'app/build/test-results/test/TEST-*.xml'
+            sh 'bash ci/unit-test-app.sh'
             stash(excludes: '.git', name: 'code')
           }
         }
@@ -33,14 +27,9 @@ pipeline {
           options {
             skipDefaultCheckout(true)
           }
-          agent {
-            docker {
-              image 'gradle:jdk11'
-            }
-          }
           steps {
             unstash 'code'
-            sh 'ci/build-app.sh'
+            sh 'bash ci/build-app.sh'
             archiveArtifacts 'app/build/libs/'
             stash(excludes: '.git', name: 'code')
           }
@@ -56,9 +45,10 @@ pipeline {
             }
       steps {
         unstash 'code'
+        sh 'bash ci/lint-dockerfile.sh'
         sh 'echo "$DCREDS_PSW" | docker login -u "$DCREDS_USR" --password-stdin'
-        sh 'ci/build-docker.sh'
-        sh 'ci/push-docker.sh'
+        sh 'bash ci/build-docker.sh'
+        sh 'bash ci/push-docker.sh'
       }
     }
     stage('component test') {
@@ -67,7 +57,8 @@ pipeline {
       }
       steps {
         unstash 'code'
-        sh 'ci/component-test.sh'
+        sh 'bash ci/component-test.sh'
+        sh 'bash ci/performance-test.sh'
       }
     }
 
