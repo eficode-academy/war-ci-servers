@@ -1,19 +1,18 @@
 pipeline {
   agent any
-  environment { 
+    environment { 
         docker_username = 'praqmasofus'
   }
   stages {
-    stage('clone down') {
+    stage('Clone down') {
       steps {
         stash(excludes: '.git', name: 'code')
         deleteDir()
       }
     }
-
     stage('Test and build') {
       parallel {
-        stage('test app') {
+        stage('Test app') {
           options {
             skipDefaultCheckout(true)
           }
@@ -23,7 +22,7 @@ pipeline {
             stash(excludes: '.git', name: 'code')
           }
         }
-        stage('build app') {
+        stage('Build app') {
           options {
             skipDefaultCheckout(true)
           }
@@ -36,13 +35,13 @@ pipeline {
         }
       }
     }
-    stage('build docker') {
+    stage('Build docker') {
       options {
         skipDefaultCheckout(true)
       }
       environment {
-                DCREDS = credentials('docker')
-            }
+        DCREDS = credentials('docker')
+      }
       steps {
         unstash 'code'
         sh 'bash ci/lint-dockerfile.sh'
@@ -51,7 +50,7 @@ pipeline {
         sh 'bash ci/push-docker.sh'
       }
     }
-    stage('component test') {
+    stage('System test') {
       options {
         skipDefaultCheckout(true)
       }
