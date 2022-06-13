@@ -1,5 +1,4 @@
 name: Java CI
-
 on: [push]
 env: # Set the secret as an input
   docker_username: ${{ secrets. docker_username }}

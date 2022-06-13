@@ -18,7 +18,6 @@ jobs:
       - run:
           name: Test with gradle
           command: bash ci/unit-test-app.sh
-
   build:
     machine:
       image: ubuntu-2004:current
@@ -59,7 +58,6 @@ jobs:
       - run:
           name: Execute performance test
           command: export GIT_COMMIT="CC-$CIRCLE_SHA1" && bash ci/performance-test.sh
-
 workflows:
   version: 2
   the_flow:

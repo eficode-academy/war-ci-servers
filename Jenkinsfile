@@ -60,7 +60,5 @@ pipeline {
         sh 'bash ci/performance-test.sh'
       }
     }
-
-  }
-  
+  }  
 }
