@@ -21,8 +21,9 @@ Link to the pipelines:
 
 * [Jenkinsfile pipeline](Jenkinsfile) written in declarative pipeline
 * [GitlabCI](.gitlab-ci.yml)
-* [CirleCI](.circleci/config.yml)
+* [CircleCI](.circleci/config.yml)
 * [Github Actions](.github/workflows/gradle.yml)
+* [Travis CI](.travis.yml)
 
 ## feedback and pull request
 
