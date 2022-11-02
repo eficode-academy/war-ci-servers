@@ -1,6 +1,6 @@
 pipeline {
   agent any
-    environment {
+    environment { 
         docker_username = 'praqmasofus'
   }
   options {
@@ -52,5 +52,5 @@ pipeline {
         sh 'bash ci/performance-test.sh'
       }
     }
-  }
+  }  
 }
