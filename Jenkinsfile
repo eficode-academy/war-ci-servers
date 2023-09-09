@@ -3,9 +3,13 @@ pipeline {
     environment { 
         docker_username = 'praqmasofus'
   }
+  options {
+    skipDefaultCheckout(true)
+  }
   stages {
     stage('Clone down') {
       steps {
+        checkout scm
         stash(excludes: '.git', name: 'code')
         deleteDir()
       }
@@ -13,9 +17,6 @@ pipeline {
     stage('Test and build') {
       parallel {
         stage('Test app') {
-          options {
-            skipDefaultCheckout(true)
-          }
           steps {
             unstash 'code'
             sh 'bash ci/unit-test-app.sh'
@@ -23,9 +24,6 @@ pipeline {
           }
         }
         stage('Build app') {
-          options {
-            skipDefaultCheckout(true)
-          }
           steps {
             unstash 'code'
             sh 'bash ci/build-app.sh'
@@ -36,9 +34,6 @@ pipeline {
       }
     }
     stage('Build docker') {
-      options {
-        skipDefaultCheckout(true)
-      }
       environment {
         DCREDS = credentials('docker')
       }
@@ -51,9 +46,6 @@ pipeline {
       }
     }
     stage('System test') {
-      options {
-        skipDefaultCheckout(true)
-      }
       steps {
         unstash 'code'
         sh 'bash ci/component-test.sh'
